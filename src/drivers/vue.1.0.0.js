@@ -75,10 +75,16 @@ module.exports = {
 
         this.options.router.beforeEach(function (transition, location, next) {
             routerBeforeEach.call(_this, function () {
-                transitionEach.call(_this, (transition.to || transition).auth, function () { (next || transition.next)(); });
+                transitionEach.call(_this, _this.getRouterAuth(), function () { (next || transition.next)(); });
             });
         })
     },
+	_getRouterAuth: function(transition){
+		//v1.0
+		return (transition.to || transition).auth;
+		//v2.0
+		return transition.meta.auth;
+	} ,
 
     _invalidToken: function (res) {
         if (res.status === 401) {
